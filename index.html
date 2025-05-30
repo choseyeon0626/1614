@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI의 거짓말: 생성형 AI 조사 보고서</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Inter', sans-serif; /* Tailwind uses system fonts by default, Inter is a good fallback option */
+            background-color: #F4F7F9; /* Light Background */
+            color: #263238; /* Dark Text */
+        }
+        .card {
+            background-color: #FFFFFF; /* Light Background for cards */
+            border-radius: 0.75rem; /* Rounded corners */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+        }
+        .chart-container {
+            position: relative; /* Required for Chart.js responsiveness */
+            margin: auto;
+        }
+        h1, h2, h3 {
+            color: #2A62B6; /* Primary Blue */
+        }
+        h2 {
+            border-bottom: 2px solid #4ECDC4; /* Secondary Teal */
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .badge {
+            background-color: #4ECDC4; /* Secondary Teal */
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px; /* Pill shape */
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .accent-text {
+            color: #2A62B6; /* Primary Blue */
+            font-weight: 600;
+        }
+        /* Custom list style for "제언" */
+        .suggestion-list li {
+            position: relative;
+            padding-left: 1.75rem; /* Space for the custom bullet */
+            margin-bottom: 0.75rem;
+        }
+        .suggestion-list li::before {
+            content: '✔'; /* Custom bullet */
+            position: absolute;
+            left: 0;
+            color: #4ECDC4; /* Secondary Teal */
+            font-weight: bold;
+            font-size: 1.125rem;
+        }
+
+        /* Tooltip styling (Chart.js) */
+        .chartjs-tooltip {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 4px;
+            padding: 8px;
+            font-size: 0.875rem;
+        }
+        .chartjs-tooltip-key {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-5xl mx-auto">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold mb-2">AI의 거짓말</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-4">AI도 가끔 '뻥'을 친다고?</p>
+            <div class="text-sm text-gray-500">
+                <p>미림마이스터고등학교 1학년 6반 4조</p>
+                <p>곽연서, 김하정, 조세연, 조은지, 최수인</p>
+                <p>작성일: 2025년 5월</p>
+            </div>
+        </header>
+
+        <main>
+            <section class="card" id="motivation-purpose">
+                <h2 class="text-2xl font-semibold">1. 조사 동기 및 목적</h2>
+                <p class="text-gray-700 leading-relaxed">
+                    평소 생성형 AI 사용 중 사실과 다른 정보를 제공하는 문제가 발생함이 인지되었다.
+                    본 조사는 생성형 AI가 정보를 제공하는 방식과 오류 발생 빈도를 파악하고,
+                    1학년 6반 학생들의 비판적 사고 인식을 파악하는 것을 목적으로 한다. 이를 통해 생성형 AI의 문제점에 대한 경각심을 심어주며 올바른 사용 방법을 제안하는 데 목적을 둔다.
+                </p>
+            </section>
+
+            <section class="card" id="investigation-plan">
+                <h2 class="text-2xl font-semibold">2. 조사 계획</h2>
+                <div class="grid md:grid-cols-2 gap-6 text-gray-700">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">조사 방법 및 대상</h3>
+                        <p><span class="font-medium">방법:</span> 인터뷰 및 설문조사</p>
+                        <p><span class="font-medium">대상:</span> 미림마이스터고 뉴미디어디자인과 1-6반 학생 17명 (설문), 김시은 & 윤수아 학생 (인터뷰)</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">조사 기간</h3>
+                        <p>2025년 5월 10일 ~ 2025년 5월 20일</p>
+                    </div>
+                </div>
+                <div class="mt-4 overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">조사방법</th>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">조사 대상</th>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">조사 내용</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 text-sm">
+                            <tr>
+                                <td class="px-4 py-2">설문조사</td>
+                                <td class="px-4 py-2">미림마이스터고 1학년 6반 학생들</td>
+                                <td class="px-4 py-2">학생들이 AI에 얼마나 의존하는지, AI가 모순되거나 거짓된 말을 하였을 때 어떻게 대처하는지에 대하여 조사한다.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2">인터뷰</td>
+                                <td class="px-4 py-2">미림마이스터고 1학년 6반 김시은 & 윤수아</td>
+                                <td class="px-4 py-2">일상생활에서 AI가 거짓말을 했었던 경험을 조사하고, 거짓말을 겪은 상황을 어떻게 해결하였는지 혹은 어떻게 해결해나가야 할 지 조사한다.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="investigation-results">
+                <h2 class="text-2xl font-semibold card !bg-transparent !shadow-none !p-0 !mb-4">3. 조사 결과</h2>
+                
+                <div class="card mb-8">
+                    <h3 class="text-xl font-semibold mb-4 text-center md:text-left">설문조사 결과</h3>
+                    <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="text-center p-4 border border-gray-200 rounded-lg bg-slate-50">
+                            <p class="font-medium mb-2 text-sm">Q1. AI가 정보를 제공했을 때, 처음에 그 정보를 어느 정도 신뢰하는 편인가요?</p>
+                            <div class="chart-container h-64 md:h-72">
+                                <canvas id="surveyChart1"></canvas>
+                            </div>
+                            <p class="mt-3 text-xs text-gray-600">
+                                <span class="accent-text">주요 결과:</span> 1학년 6반 학생 절반 이상(52.9%)이 AI를 다소 신뢰하는 편이다. 전혀 신뢰하지 않는 학생은 없었으며, 17.6%는 매우 신뢰한다고 응답했다.
+                            </p>
+                        </div>
+                        <div class="text-center p-4 border border-gray-200 rounded-lg bg-slate-50">
+                            <p class="font-medium mb-2 text-sm">Q2. 생성형 AI가 준 정보가 정확한지 다른 곳에서 확인해 본 경험이 있나요?</p>
+                            <div class="chart-container h-64 md:h-72">
+                                <canvas id="surveyChart2"></canvas>
+                            </div>
+                            <p class="mt-3 text-xs text-gray-600">
+                                <span class="accent-text">주요 결과:</span> 학생들이 AI 정보를 다른 곳에서 확인하는 경험은 다양했다. '조금 있다'(41.2%)와 '별로 없다'(29.4%)가 높은 비율을 차지했다.
+                            </p>
+                        </div>
+                        <div class="text-center p-4 border border-gray-200 rounded-lg bg-slate-50">
+                            <p class="font-medium mb-2 text-sm">Q3. 생성형 AI가 잘못된 정보를 제공했다고 생각했을 때, 가장 먼저 어떤 행동을 하시나요?</p>
+                            <div class="chart-container h-64 md:h-72">
+                                <canvas id="surveyChart3"></canvas>
+                            </div>
+                            <p class="mt-3 text-xs text-gray-600">
+                                <span class="accent-text">주요 결과:</span> AI가 잘못된 정보를 제공 시, '다른 검색 엔진/사이트에서 직접 확인'(52.9%)이 가장 많았고, 'AI에게 다시 질문'(35.3%)이 뒤를 이었다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-4">인터뷰 결과</h3>
+                    <div class="space-y-6 text-gray-700 leading-relaxed">
+                        <div>
+                            <h4 class="font-semibold text-lg mb-1"><span class="badge mr-2">김시은 학생</span>AI 정보 불신 후 비판적 검토 태도 강화</h4>
+                            <p>수학 문제 풀이에 AI를 사용했으나 풀이와 결과 모두 부정확했다. 이 경험으로 AI 정보 신뢰도가 낮아졌으며, "모든 것을 의심해가면서 살겠다"고 다짐했다. AI 답변을 무조건 신뢰하지 않고 항상 비판적으로 검토하며, 인터넷 검색 및 전문가 자료를 통해 진위를 확인하는 태도의 중요성을 강조했다. 앞으로도 AI 정보를 교차 검증할 것이라고 밝혔다.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-lg mb-1"><span class="badge mr-2">윤수아 학생</span>AI 정보 오류로 수행평가 감점 경험</h4>
+                            <p>중학교 국어 수행평가에서 AI가 생성한 칼럼 감상문이 실제 내용과 정반대여서 낮은 점수를 받았다. (한강 작가의 '소년이 온다' 내용 왜곡). 이 경험으로 AI 정보 정확성을 신뢰하기 어렵게 되었다. 정보 확인 시 친구나 선배와의 대화를 통해 검증하고, 필요시 포털사이트에서 추가 사실을 확인한다고 응답했다. 사람 간 소통을 통한 정보 검증을 더 신뢰한다고 말했다.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card" id="conclusion">
+                <h2 class="text-2xl font-semibold">4. 결론</h2>
+                <div class="space-y-4 text-gray-700 leading-relaxed">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">가. 조사 결과 종합 및 주요 발견점</h3>
+                        <p>1학년 6반 학생 17명 대상 설문 결과, AI 정보에 대해 '조금 신뢰한다'는 응답(9명)이 가장 많았고, '전혀 신뢰하지 않는다'는 0명이었다. 이는 대부분 학생이 AI를 어느 정도 신뢰하며, 소수는 매우 신뢰함을 나타낸다. 정보 확인 경험에 대해서는 '조금 있다'(9명)가 다수였고, '매우 자주 있다'(2명)도 있었다. '별로 없다'는 5명이었다. AI 오류 시 대부분 학생은 재질문 또는 인터넷 검색으로 정보를 확인했으며, AI 사용을 중단한 학생은 없었다. 이는 AI가 학생들에게 큰 영향을 미치고 있음을 시사한다. 인터뷰를 통해 AI가 내용 측면에서 오류를 발생하는 경우가 많다는 사실도 확인되었다.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">나. 조사를 통해 새롭게 알게 된 점 및 느낀 점</h3>
+                        <p>1학년 6반 학생들은 AI를 많이 사용하며, AI로 인해 피해를 본 경험이 있다. AI 오류 시 검색 또는 재질문을 통해 해결하려 했으며, AI 사용을 중단한 학생은 없었다. 이를 통해 AI가 학생들의 생활에 깊숙이 관여하고 있으며, 필수적인 도구로 인식되고 있음을 알 수 있었다. 인터뷰를 통해 학생들이 잘못된 정보를 얻은 경험이 있음을 구체적으로 파악할 수 있었다.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">다. 제언</h3>
+                        <ul class="suggestion-list list-inside space-y-2">
+                            <li>생성형 AI 사용 시 무조건적으로 신뢰하지 않고 비판적인 태도로 의심하는 자세가 필요하다. AI 답변을 항상 의심하고, 다양한 AI, 검색 엔진, 학술 자료 등을 통해 교차 검증해야 한다. 네이버, 구글부터 전문가 논문까지 자료를 찾아보며 정보의 사실 유무를 확인해야 한다.</li>
+                            <li>생성형 AI 활용 시 책임감을 가지는 태도가 필요하다. 과제나 보고서 등에 AI 도움을 받더라도 정보 정확도를 재고하고, AI 정보를 그대로 사용하기보다 본인의 생각을 더하여 AI를 도구로서 활용해야 한다.</li>
+                        </ul>
+                        <p class="mt-3">생성형 AI는 이제 우리 일상생활에서 필수적인 도구이다. 익숙해지고 중요해진 만큼 주의 깊게 사용해야 한다. AI에 대한 의존도가 높아진 만큼, AI의 행동과 답변을 의심하고 다양한 방법으로 고민하며 올바른 방법으로 사용해야 한다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card" id="references">
+                <h2 class="text-2xl font-semibold">5. 참고 자료</h2>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>자료: 고등학교 1학년 국어 교과서 199P~202P</li>
+                    <li>사이트: Chat GPT, Wrtn, Google Gemini, Perplexity, Clova Note</li>
+                </ul>
+            </section>
+        </main>
+
+        <footer class="text-center mt-12 py-6 border-t border-gray-300">
+            <p class="text-sm text-gray-500">&copy; 2025 미림마이스터고 1학년 6반 4조. All rights reserved.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // Chart.js Configuration
+        // Common configuration for tooltips
+        const commonTooltipCallbacks = {
+            callbacks: {
+                label: function(context) {
+                    let label = context.dataset.label || context.label || '';
+                    if (label) {
+                        label += ': ';
+                    }
+                    const value = context.parsed.y !== undefined ? context.parsed.y : context.parsed;
+                    label += value.toFixed(1) + '%';
+                    return label;
+                },
+                title: function(context) {
+                     // For pie charts, context[0].label is the segment label.
+                     // For bar charts, context[0].label is the x-axis label.
+                    return context[0].label.replace(/\\n/g, ' ');
+                }
+            }
+        };
+        
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: { size: 10 },
+                        padding: 10,
+                        // Custom label formatter for legend if needed for wrapping
+                        generateLabels: function(chart) {
+                            const data = chart.data;
+                            if (data.labels.length && data.datasets.length) {
+                                return data.labels.map(function(label, i) {
+                                    const meta = chart.getDatasetMeta(0);
+                                    const style = meta.controller.getStyle(i);
+                                    // Simple wrap for legend, can be more sophisticated
+                                    const lines = [];
+                                    const words = label.split(' ');
+                                    let currentLine = '';
+                                    words.forEach(word => {
+                                        if ((currentLine + word).length > 10 && currentLine.length > 0) { // Adjust length as needed
+                                            lines.push(currentLine);
+                                            currentLine = word;
+                                        } else {
+                                            currentLine += (currentLine.length > 0 ? ' ' : '') + word;
+                                        }
+                                    });
+                                    lines.push(currentLine);
+
+                                    return {
+                                        text: lines, // Chart.js v3+ supports array of strings for multiline
+                                        fillStyle: style.backgroundColor,
+                                        strokeStyle: style.borderColor,
+                                        lineWidth: style.borderWidth,
+                                        hidden: !chart.getDataVisibility(i),
+                                        index: i
+                                    };
+                                });
+                            }
+                            return [];
+                        }
+                    }
+                },
+                tooltip: {
+                    ...commonTooltipCallbacks,
+                    backgroundColor: 'rgba(38, 50, 56, 0.8)', // Dark Text with opacity
+                    titleFont: { size: 14, weight: 'bold' },
+                    bodyFont: { size: 12 },
+                    padding: 10,
+                    cornerRadius: 4,
+                    displayColors: true, // Show color box in tooltip
+                    borderColor: '#4ECDC4', // Secondary Teal
+                    borderWidth: 1
+                }
+            }
+        };
+
+        // Chart 1: AI 정보 신뢰도
+        const surveyCtx1 = document.getElementById('surveyChart1').getContext('2d');
+        new Chart(surveyCtx1, {
+            type: 'pie',
+            data: {
+                labels: [
+                    '조금 신뢰하지 않는다', 
+                    '보통이다', 
+                    '조금 신뢰한다', 
+                    '매우 신뢰한다'
+                ],
+                datasets: [{
+                    label: '응답 비율',
+                    data: [11.8, 17.6, 52.9, 17.6],
+                    backgroundColor: ['#A9A9A9', '#E0F2FE', '#4ECDC4', '#2A62B6'], // Accent Grey, Supporting Light Blue, Secondary Teal, Primary Blue
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2
+                }]
+            },
+            options: { ...commonChartOptions }
+        });
+
+        // Chart 2: AI 정보 확인 경험
+        const surveyCtx2 = document.getElementById('surveyChart2').getContext('2d');
+        new Chart(surveyCtx2, {
+            type: 'bar',
+            data: {
+                labels: [
+                    '전혀 없다\n(0회)', 
+                    '별로 없다', 
+                    '보통이다', 
+                    '조금 있다', 
+                    '매우 자주 한다\n(항상)'
+                ],
+                datasets: [{
+                    label: '응답 비율 (%)',
+                    data: [5.9, 29.4, 11.8, 41.2, 11.8],
+                    backgroundColor: ['#E0F2FE', '#A9A9A9', '#4ECDC4', '#2A62B6', '#263238'], // Supporting Light Blue, Accent Grey, Secondary Teal, Primary Blue, Dark Text
+                    borderColor: '#FFFFFF',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) { return value + '%' }
+                        },
+                        grid: { display: true, color: '#E0E0E0' }
+                    },
+                    x: {
+                        ticks: {
+                             font: { size: 10 },
+                             callback: function(value, index, ticks) {
+                                const label = this.getLabelForValue(value);
+                                // Check if label contains \n for manual line breaks
+                                if (typeof label === 'string' && label.includes('\\n')) {
+                                    return label.split('\\n');
+                                }
+                                // Fallback for automatic wrapping (less ideal for Korean)
+                                const maxLength = 8; // Chars per line
+                                if (typeof label === 'string' && label.length > maxLength) {
+                                    let lines = [];
+                                    let currentLine = "";
+                                    label.split('').forEach(char => {
+                                        if (currentLine.length >= maxLength) {
+                                            lines.push(currentLine);
+                                            currentLine = "";
+                                        }
+                                        currentLine += char;
+                                    });
+                                    if (currentLine) lines.push(currentLine);
+                                    return lines;
+                                }
+                                return label;
+                            }
+                        },
+                        grid: { display: false }
+                    }
+                },
+                plugins: { // Overriding legend for bar chart if needed
+                    legend: { display: false }, // Bar chart usually doesn't need legend if only one dataset
+                     tooltip: { ...commonChartOptions.plugins.tooltip }
+                }
+            }
+        });
+
+        // Chart 3: AI 오류 시 대처 방안
+        const surveyCtx3 = document.getElementById('surveyChart3').getContext('2d');
+        new Chart(surveyCtx3, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'AI에게 다시 질문\n정보 요청', 
+                    '다른 검색 엔진 등\n직접 확인', 
+                    '그냥 넘어감', 
+                    '선생님/친구 도움'
+                ],
+                datasets: [{
+                    label: '응답 비율 (%)',
+                    data: [35.3, 52.9, 5.9, 5.9],
+                    backgroundColor: ['#4ECDC4', '#2A62B6', '#A9A9A9', '#E0F2FE'], // Secondary Teal, Primary Blue, Accent Grey, Supporting Light Blue
+                    borderColor: '#FFFFFF',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                }]
+            },
+             options: {
+                ...commonChartOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) { return value + '%' }
+                        },
+                        grid: { display: true, color: '#E0E0E0' }
+                    },
+                    x: {
+                         ticks: {
+                             font: { size: 10 },
+                             callback: function(value, index, ticks) {
+                                const label = this.getLabelForValue(value);
+                                if (typeof label === 'string' && label.includes('\\n')) {
+                                    return label.split('\\n');
+                                }
+                                const maxLength = 10; // Chars per line
+                                if (typeof label === 'string' && label.length > maxLength) {
+                                    let lines = [];
+                                    let currentLine = "";
+                                    // Simplified split for Korean - may need refinement
+                                    for(let i=0; i<label.length; i+=maxLength) {
+                                        lines.push(label.substring(i, Math.min(i+maxLength, label.length)));
+                                    }
+                                    return lines;
+                                }
+                                return label;
+                            }
+                        },
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { ...commonChartOptions.plugins.tooltip }
+                }
+            }
+        });
+
+        // Adjust Chart.js default font for better Korean rendering if needed
+        Chart.defaults.font.family = "'Inter', 'Noto Sans KR', sans-serif";
+        Chart.defaults.font.size = 12;
+
+    </script>
+</body>
+</html>
+
